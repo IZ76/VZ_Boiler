@@ -1,7 +1,9 @@
 # VZ_Boiler
 - Данный код написан в приложении Arduino IDE для платы ESP8266.
 - Настройку и управление устройством возможно производить или через WEB интерфейс, 
-или через Android приложение https://play.google.com/store/apps/details?id=com.vz.kitchen
+или через Android приложение https://play.google.com/store/apps/details?id=com.vz.kitchen <br>
+<a href="http://piccy.info/view3/13809095/f7de006dc4a2d7c487163fe733e9335e/" target="_blank"><img src="http://i.piccy.info/i9/920d0cc813e03d4aca4731a4f0fe4f1d/1589703803/17022/1367845/screenBig_500.jpg" alt="Piccy.info - Free Image Hosting" border="0" /></a><a href="http://i.piccy.info/a3c/2020-05-17-08-23/i9-13809095/500x201-r" target="_blank"><img src="http://i.piccy.info/a3/2020-05-17-08-23/i9-13809095/500x201-r/i.gif" alt="" border="0" /></a> 
+
 - При первом включении устройство создает свою собственную точку доступа для настроки подключения к существующей WiFi сети.
 - Минимально воможно использовать устройство как модуль управления бойлером по времени.
 - Вы можете выставить до 5 временных интервалов для установки заданной температуры нагрева воды.
@@ -36,3 +38,5 @@
 - //               - D12 GPIO 10
 - sensorGas        - A0 ADCO    вход от датчика газа или любого другого датчика
 - ************************************************************************/
+<br>
+Тема для обсуждения на форуме Амперки http://forum.amperka.ru/threads/умный-бойлер.20700/
