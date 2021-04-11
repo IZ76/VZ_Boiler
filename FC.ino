@@ -14,11 +14,9 @@ bool loadConfig(){
     return false;
   }
   jsonConfig=configFile.readString();
-//DynamicJsonBuffer jsonBuffer;                                  //JSON V5
-  DynamicJsonDocument doc(2048);                                 //JSON V6
-  deserializeJson(doc, jsonConfig);                              //JSON V6
+  DynamicJsonDocument doc(2048);
+  deserializeJson(doc, jsonConfig);
   configFile.close();
-//JsonObject& root=jsonBuffer.parseObject(jsonConfig);           //JSON V5
 
   fanTempOn=doc["fanTempOn"];
   onOutside=doc["onOutside"];
@@ -73,6 +71,19 @@ bool loadConfig(){
   snprintf(mqtt_pub_gasVol, 29, "%s", (doc["mqtt_pub_gasVol"].as<String>()).c_str());
   mqttOn = doc["mqttOn"];
   
+  postNmon =  doc["postNmon"];
+  nameNmon = doc["nameNmon"].as<String>();
+  ownerNmon = doc["ownerNmon"].as<String>();
+  latNmon = doc["latNmon"].as<String>();
+  lonNmon = doc["lonNmon"].as<String>();
+  altNmon = doc["altNmon"].as<String>();
+  periodSendNmon = doc["periodSendNmon"];
+  writeNmon[0] = doc["writeNmon0"];
+  writeNmon[1] = doc["writeNmon1"];
+  writeNmon[2] = doc["writeNmon2"];
+  writeNmon[3] = doc["writeNmon3"];
+  writeNmon[4] = doc["writeNmon4"];
+  
   Serial.println("OK LOAD config.json");
   bip(3);
   return true;
@@ -80,10 +91,8 @@ bool loadConfig(){
 
 //--------------------------------------------------------------------------
 bool saveConfig(){
-//DynamicJsonBuffer jsonBuffer;                             //JSON V5
-//JsonObject& json=jsonBuffer.parseObject(jsonConfig);      //JSON V5
-  DynamicJsonDocument doc(2048);                            //JSON V6
-  deserializeJson(doc, jsonConfig);                         //JSON V6
+  DynamicJsonDocument doc(2048);
+  deserializeJson(doc, jsonConfig);
 
   doc["fanTempOn"] = fanTempOn;
   doc["onOutside"] = onOutside;
@@ -137,10 +146,21 @@ bool saveConfig(){
   doc["mqtt_pub_temp5"] = mqtt_pub_temp5;
   doc["mqtt_pub_gasVol"] = mqtt_pub_gasVol;
   doc["mqttOn"] = mqttOn;
-//json.printTo(jsonConfig);                                 //JSON V5
-//Serial.println(jsonConfig);                               //JSON V5
+  
+  doc["postNmon"] = postNmon;  
+  doc["nameNmon"] = nameNmon; 
+  doc["ownerNmon"] = ownerNmon;
+  doc["latNmon"] = latNmon;
+  doc["lonNmon"] = lonNmon;
+  doc["altNmon"] = altNmon;
+  doc["periodSendNmon"] = periodSendNmon;
+  doc["writeNmon0"] = writeNmon[0];
+  doc["writeNmon1"] = writeNmon[1];
+  doc["writeNmon2"] = writeNmon[2];
+  doc["writeNmon3"] = writeNmon[3];
+  doc["writeNmon4"] = writeNmon[4];
   jsonConfig = "";
-  if(serializeJson(doc, jsonConfig)==0){                    //JSON V6 
+  if(serializeJson(doc, jsonConfig)==0){
     Serial.println(F("Failed to write to jsonConfig"));
   }
   File configFile = SPIFFS.open("/config.json", "w");
@@ -149,8 +169,7 @@ bool saveConfig(){
     Serial.println("ERROR OPEN FILE config.json");
     return false;
   }
-//json.printTo(configFile);                                 //JSON V5
-  if(serializeJson(doc, configFile)==0){                    //JSON V6 
+  if(serializeJson(doc, configFile)==0){
     Serial.println(F("Failed to write to file"));
   }
   Serial.print("Save Config : ");

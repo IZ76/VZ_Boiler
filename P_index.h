@@ -24,7 +24,11 @@ const char P_index[] PROGMEM =  R"=====(
                 server += "&mqtt_name=" + val('mqtt_name') + "&mqtt_sub_temp=" + val('mqtt_sub_temp') + "&mqtt_heating_boiler=" + val('mqtt_heating_boiler') + "&mqtt_pub_statBoiler=" + val('mqtt_pub_statBoiler');
                 server += "&mqtt_pub_statFan=" + val('mqtt_pub_statFan') + "&mqtt_pub_info=" + val('mqtt_pub_info') + "&mqtt_pub_tempBoiler=" + val('mqtt_pub_tempBoiler') + "&mqtt_pub_tempUl=" + val('mqtt_pub_tempUl');
                 server += "&mqtt_pub_tempFan=" + val('mqtt_pub_tempFan') + "&mqtt_pub_temp4=" + val('mqtt_pub_temp4') + "&mqtt_pub_temp5=" + val('mqtt_pub_temp5') + "&mqtt_pub_gasVol=" + val('mqtt_pub_gasVol');
-                
+
+                server += "&postNmon=" + val_sw('postNmon') + "&macNmon=" + val('macNmon') + "&nameNmon=" + val('nameNmon') + "&ownerNmon=" + (val('ownerNmon'));
+                server += "&latNmon=" + val('latNmon') + "&lonNmon=" + val('lonNmon') + "&altNmon=" + val('altNmon') + "&periodSendNmon=" + val('periodSendNmon');
+                server += "&writeNmon0=" + val('writeNmon0') + "&writeNmon1=" + val('writeNmon1') + "&writeNmon2=" + val('writeNmon2') + "&writeNmon3=" + val('writeNmon3') + "&writeNmon4=" + val('writeNmon4');
+                 
                 send_request(submit, server);
             }
         </script>
@@ -37,85 +41,60 @@ const char P_index[] PROGMEM =  R"=====(
         </header> 
         <central-unit>   
         <div class="body__center">
-            <div class="menu_unit">
-                <a class="link__img" href="/config.html"><span class="ico__text">Wifi</span></a>
-                <a class="link__img" href="/boiler.html"><span class="ico__text">Бойлер</span></a>
-                <a class="link__img" href="/fan.html"><span class="ico__text">Вытяжка</span></a>
-                <a class="link__img" href="/update.html"><span class="ico__text">Обновление</span></a>
-                <a class="link__img" href="/admin.html"><span class="ico__text">Старое меню</span></a>
-            </div>
-            <hr>
             <br>
             <titles>
                 <span class="opt_cn">Состояние устройства</span>
             </titles>
             <div id="main_unit">
+                <center>
                 <table>
                     <tr>
-                        <td align="right" height="25"><span class="opt_cn">Подогрев бойлера</span></td>
-                        <td><span>&nbsp &nbsp </td>
-                        <td><span id="123">{{tempHotBoiler}}</span></td>
-                        <td><span class="save_booton" onclick="set_heating(this);" height="25">&#9728;</span></td>
+                        <td align="right" height="25"><span class="opt_cn">Состояние бойлера:&nbsp&nbsp</span></td>
+                        <td><span class="opt_cn">{{statusBoiler}}&nbsp({{tempBoiler}}&degC)</span></td>
                     </tr>
                     <tr>
-                        <td align="right" height="25"><span class="opt_cn">Температура бойлера</span></td>
-                        <td><span>&nbsp &nbsp </td>
-                        <td><span class="opt_cn">{{tempBoiler}}&degC</span></td>
+                        <td align="right" height="25"><span class="opt_cn">Подогрев бойлера:&nbsp&nbsp</span></td>
+                        <td>
+                          <span id="123">{{tempHotBoiler}}</span>
+                          <span class="save_booton" onclick="set_heating(this);" height="25"> &nbsp &#9728;</span>
+                        </td>
                     </tr>
                     <tr>
-                        <td align="right" height="25"><span class="opt_cn">Состояние бойлера</span></td>
-                        <td><span>&nbsp &nbsp </td>
-                        <td><span class="opt_cn">{{statusBoiler}}</span></td>
+                        <td align="right" height="25"><span class="opt_cn">Состояние вытяжки:&nbsp&nbsp</span></td>
+                        <td><span class="opt_cn">{{statusFan}}&nbsp({{tempFan}}&degC)</span></td>
                     </tr>
                     <tr>
-                        <td align="right" height="25"><span class="opt_cn">Температура вытяжки</span></td>
-                        <td><span>&nbsp &nbsp </td>
-                        <td><span class="opt_cn">{{tempFan}}&degC</span></td>
-                    </tr>
-                    <tr>
-                        <td align="right" height="25"><span class="opt_cn">Состояние вытяжки</span></td>
-                        <td><span>&nbsp &nbsp </td>
-                        <td><span class="opt_cn">{{statusFan}}</span></td>
-                    </tr>
-                    <tr>
-                        <td align="right" height="25"><span class="opt_cn">Температура включения вытяжки</span></td>
-                        <td><span>&nbsp &nbsp </td>
+                        <td align="right" height="25"><span class="opt_cn">Включение вытяжки:&nbsp&nbsp</span></td>
                         <td><input type="number" min="0" step="1" max="100" id="fanTempOn" name="fanTempOn" value="{{fanTempOn}}"</input><span>&degC</span></td>
                     </tr>
                     <tr>
-                        <td align="right" height="25"><span class="opt_cn">Учитывать внешнюю температуру</span></td>
-                        <td><span>&nbsp &nbsp </td>
+                        <td align="right" height="25"><span class="opt_cn">Учитывать коррекцию:&nbsp&nbsp</span></td>
                         <td><select id = "onOutside">
                             <option value="0">Нет</option>
                             <option value="1">Да</option>
                         </select></td>
                     </tr>
                     <tr>
-                        <td align="right" height="25"><span class="opt_cn">tВытяжки &ge; tВнешняя + </span></td>
-                        <td><span>&nbsp &nbsp </td>
+                        <td align="right" height="25"><span class="opt_cn">tВытяжки &ge; tВнешняя +&nbsp&nbsp</span></td>
                         <td><input type="number" min="-50" step="1" max="50" id="deltaOutside" name="deltaOutside" value="{{deltaOutside}}"</input><span>&degC</span></td>
                     </tr>
                     <tr>
-                        <td align="right" height="25"><span class="opt_cn">Внешняя температура</span></td>
-                        <td><span>&nbsp &nbsp </td>
+                        <td align="right" height="25"><span class="opt_cn">Внешняя температура:&nbsp&nbsp</span></td>
                         <td><span class="opt_cn">{{tempOutside}}&degC</span></td>
                     </tr>
                     <tr>
-                        <td align="right" height="25"><span class="opt_cn">Уровень газа</span></td>
-                        <td><span>&nbsp &nbsp </td>
-                        <td><span class="opt_cn">{{gasVol}}</span></td>
+                        <td align="right" height="25"><span class="opt_cn">Сигнал уровня газа:&nbsp&nbsp</span></td>
+                        <td>
+                          <input type="number" min="0" step="1" max="1023" id="gasVolAlarm" name="gasVolAlarm" value="{{gasVolAlarm}}"</input>
+                          <span class="opt_cn">({{gasVol}})</span>
+                        </td>
                     </tr>
                     <tr>
-                        <td align="right" height="25"><span class="opt_cn">Уровень аварии газа</span></td>
-                        <td><span>&nbsp &nbsp </td>
-                        <td><input type="number" min="0" step="1" max="1023" id="gasVolAlarm" name="gasVolAlarm" value="{{gasVolAlarm}}"</input></td>
-                    </tr>
-                    <tr>
-                        <td align="right" height="25"><span class="opt_cn">Температура на улице</span></td>
-                        <td><span>&nbsp &nbsp </td>
+                        <td align="right" height="25"><span class="opt_cn">Температура на улице:&nbsp&nbsp</span></td>
                         <td><span class="opt_cn">{{tempUl}}&degC</span></td>
                     </tr>
                 </table>
+                </center>
                 <br> 
                 <span class="save_booton" onclick="set_config(this);">Сохранить</span>  
             </div>
@@ -164,7 +143,7 @@ const char P_index[] PROGMEM =  R"=====(
                 <br>
                 <br>
                 <paragraph>
-                    <span class="opt_cn">Настройка нагрева бойлера</span>
+                    <span class="opt_cn">Настройка работы бойлера</span>
                 </paragraph>
                 <center>
                     <table id="table__font" class = "table">
@@ -785,7 +764,7 @@ const char P_index[] PROGMEM =  R"=====(
                         </tr>
                         <tr>
                             <td align = "right"><span class="opt_cn">Порт сервера</span></td>
-                            <td><input type="text" class="field form-control" id="mqtt_port" value="{{mqtt_port}}" pattern="[\d]{4,6}"><br>
+                            <td><input type="text" class="field form-control" id="mqtt_port" value="{{mqtt_port}}" pattern="[\d]{4,6}"></td>
                         </tr>
                         <tr>
                             <td align = "right"><span class="opt_cn">Имя пользователя</span></td>
@@ -847,6 +826,139 @@ const char P_index[] PROGMEM =  R"=====(
                         <tr>
                             <td align = "right"><span class="opt_cn">Публикация уровня газа</span></td>
                             <td><input type="text" class="field form-control" id="mqtt_pub_gasVol" value="{{mqtt_pub_gasVol}}" pattern="[-\w\s#@/]{1,30}"></td>
+                        </tr>
+                    </table>
+                </center>
+            </div>
+            <br>
+            <center>
+                <span class="save_booton" onclick="set_config(this);">Сохранить</span>
+            </center>
+            <br>
+            <hr>
+            <br>
+            <titles>
+                <span class="opt_cn">Настройки narodmon.ru</span>
+            </titles>
+            <div id="main_unit">
+                <label class="switch">
+                    <span class="opt_cn">Отправлять данные на narodmon сервер</span>
+                    <input type="checkbox" class="checkbox" id="postNmon" name="switch-btn" onclick="set_nmon_on(this);">
+                    <span class="switch-btn"></span>
+                </label>
+                <paragraph><span class="opt_cn">Параметры сервера:</span></paragraph>
+                <center>
+                    <table>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">MAC адрес устройства:&nbsp&nbsp</span></td>
+                            <td><span id="macNmon">VZ{{macNmon}}</span></td>
+                        </tr>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">Название (необязательно)</span></td>
+                            <td><input type="text" class="field form-control" id="nameNmon" value="{{nameNmon}}" pattern="[- 0-9a-zA-Z._/]{1,30}"></td>
+                        </tr>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">Владелец (необязательно)</span></td>
+                            <td><input type="text" class="field form-control" id="ownerNmon" value="{{ownerNmon}}" pattern="[- 0-9a-zA-Z._/]{1,30}"></td>
+                        </tr>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">Широта (необязательно)</span></td>
+                            <td><input type="text" class="field form-control" id="latNmon" value="{{latNmon}}" pattern="[- 0-9a-zA-Z._/]{1,30}"></td>
+                        </tr>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">Долгота (необязательно)</span></td>
+                            <td><input type="text" class="field form-control" id="lonNmon" value="{{lonNmon}}" pattern="[- 0-9a-zA-Z._/]{1,30}"></td>
+                        </tr>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">Высота (необязательно)</span></td>
+                            <td><input type="text" class="field form-control" id="altNmon" value="{{altNmon}}" pattern="[- 0-9a-zA-Z._/]{1,30}"></td>
+                        </tr>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">Период отправки (мин.)</span></td>
+                            <td>
+                                <select id="periodSendNmon">
+                                    <option value = "1"> 1 </option>
+                                    <option value = "2"> 2 </option>
+                                    <option value = "3"> 3 </option>
+                                    <option value = "4"> 4 </option>
+                                    <option value = "5"> 5 </option>
+                                    <option value = "10"> 10 </option>
+                                    <option value = "20"> 20 </option>
+                                    <option value = "30"> 30 </option>
+                                    <option value = "45"> 45 </option>
+                                    <option value = "60"> 60 </option>
+                                </select>
+                            </td>
+                        </tr>
+                        </table>
+                </center>  
+                <paragraph><span class="opt_cn">Каналы отправки данных</span></paragraph>
+                <center>
+                    <table>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">1&nbsp&nbsp</span></td>
+                            <td>
+                                <select id="writeNmon0">
+                                    <option value = "0"> Не использовать </option>
+                                    <option value = "1"> Датчик №1 </option>
+                                    <option value = "2"> Датчик №2 </option>
+                                    <option value = "3"> Датчик №3 </option>
+                                    <option value = "4"> Датчик №4 </option>
+                                    <option value = "5"> Датчик №5 </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">2&nbsp&nbsp</span></td>
+                            <td>
+                                <select id="writeNmon1">
+                                    <option value = "0"> Не использовать </option>
+                                    <option value = "1"> Датчик №1 </option>
+                                    <option value = "2"> Датчик №2 </option>
+                                    <option value = "3"> Датчик №3 </option>
+                                    <option value = "4"> Датчик №4 </option>
+                                    <option value = "5"> Датчик №5 </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">3&nbsp&nbsp</span></td>
+                            <td>
+                                <select id="writeNmon2">
+                                    <option value = "0"> Не использовать </option>
+                                    <option value = "1"> Датчик №1 </option>
+                                    <option value = "2"> Датчик №2 </option>
+                                    <option value = "3"> Датчик №3 </option>
+                                    <option value = "4"> Датчик №4 </option>
+                                    <option value = "5"> Датчик №5 </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">4&nbsp&nbsp</span></td>
+                            <td>
+                                <select id="writeNmon3">
+                                    <option value = "0"> Не использовать </option>
+                                    <option value = "1"> Датчик №1 </option>
+                                    <option value = "2"> Датчик №2 </option>
+                                    <option value = "3"> Датчик №3 </option>
+                                    <option value = "4"> Датчик №4 </option>
+                                    <option value = "5"> Датчик №5 </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">5&nbsp&nbsp</span></td>
+                            <td>
+                                <select id="writeNmon4">
+                                    <option value = "0"> Не использовать </option>
+                                    <option value = "1"> Датчик №1 </option>
+                                    <option value = "2"> Датчик №2 </option>
+                                    <option value = "3"> Датчик №3 </option>
+                                    <option value = "4"> Датчик №4 </option>
+                                    <option value = "5"> Датчик №5 </option>
+                                </select>
+                            </td>
                         </tr>
                     </table>
                 </center>

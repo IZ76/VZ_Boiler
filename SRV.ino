@@ -12,6 +12,7 @@ void server_init(){
   server.on("/function.js", [](){server.send_P ( 200, "text/plain", P_js);});
   server.onNotFound([](){Serial.println("Page Not Found");
   server.send(400, "text/html", "Page not Found");});
+  server.on("/buf", [](){server.send(200, "text/plain", buf);}); //Для тестов отправки запросов на народмон
   httpUpdater.setup(&server);
   server.begin();
 }
@@ -146,6 +147,34 @@ void handle_configs() {
   json += mqtt_pub_temp5;
   json += "\",\"mqtt_pub_gasVol\":\"";
   json += mqtt_pub_gasVol;
+
+  json += "\",\"macNmon\":\"";
+  json += macNmon;
+  json += "\",\"postNmon\":\"";
+  json += (postNmon==1?"checked":"");
+  json += "\",\"nameNmon\":\"";
+  json += nameNmon;
+  json += "\",\"ownerNmon\":\"";
+  json += ownerNmon;
+  json += "\",\"latNmon\":\"";
+  json += latNmon;
+  json += "\",\"lonNmon\":\"";
+  json += lonNmon;
+  json += "\",\"altNmon\":\"";
+  json += altNmon;
+  json += "\",\"periodSendNmon\":\"";
+  json += periodSendNmon;
+  json += "\",\"writeNmon0\":\"";
+  json += writeNmon[0];
+  json += "\",\"writeNmon1\":\"";
+  json += writeNmon[1];
+  json += "\",\"writeNmon2\":\"";
+  json += writeNmon[2];
+  json += "\",\"writeNmon3\":\"";
+  json += writeNmon[3];
+  json += "\",\"writeNmon4\":\"";
+  json += writeNmon[4];
+
   json += "\"}";
   server.send(200, "text/json", json);
 }
@@ -206,6 +235,19 @@ void set_configs(){
   if(server.arg("mqtt_pub_temp5")!="") snprintf(mqtt_pub_temp5, 29, "%s", server.arg("mqtt_pub_temp5").c_str());
   if(server.arg("mqtt_pub_gasVol")!="") snprintf(mqtt_pub_gasVol, 29, "%s", server.arg("mqtt_pub_gasVol").c_str());
   if(server.arg("mqttOn")!="") mqttOn = server.arg("mqttOn").toInt();
+
+  if(server.arg("postNmon")!="") postNmon = (server.arg("postNmon")=="1"?true:false);
+  nameNmon = server.arg("nameNmon").c_str();
+  ownerNmon = server.arg("ownerNmon").c_str();
+  latNmon = server.arg("latNmon").c_str();
+  lonNmon = server.arg("lonNmon").c_str();
+  altNmon = server.arg("altNmon").c_str();
+  if(server.arg("periodSendNmon")!="") periodSendNmon = server.arg("periodSendNmon").toInt();
+  if(server.arg("writeNmon0")!="") writeNmon[0] = server.arg("writeNmon0").toInt();
+  if(server.arg("writeNmon1")!="") writeNmon[1] = server.arg("writeNmon1").toInt();
+  if(server.arg("writeNmon2")!="") writeNmon[2] = server.arg("writeNmon2").toInt();
+  if(server.arg("writeNmon3")!="") writeNmon[3] = server.arg("writeNmon3").toInt();
+  if(server.arg("writeNmon4")!="") writeNmon[4] = server.arg("writeNmon4").toInt();
 
   if(mqttOn) reconnect();
   saveConfig(); 
