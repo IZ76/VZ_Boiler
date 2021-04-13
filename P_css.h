@@ -153,4 +153,9 @@ const char P_css[] PROGMEM = R"=====(
       text-align: center;
       line-height: 115%;
   }
+  .inputShort{
+      color:darkblue;
+      max-width:250px;
+      height:25px;
+  }
 )=====";

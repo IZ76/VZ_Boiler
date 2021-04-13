@@ -28,7 +28,9 @@ const char P_index[] PROGMEM =  R"=====(
                 server += "&postNmon=" + val_sw('postNmon') + "&macNmon=" + val('macNmon') + "&nameNmon=" + val('nameNmon') + "&ownerNmon=" + (val('ownerNmon'));
                 server += "&latNmon=" + val('latNmon') + "&lonNmon=" + val('lonNmon') + "&altNmon=" + val('altNmon') + "&periodSendNmon=" + val('periodSendNmon');
                 server += "&writeNmon0=" + val('writeNmon0') + "&writeNmon1=" + val('writeNmon1') + "&writeNmon2=" + val('writeNmon2') + "&writeNmon3=" + val('writeNmon3') + "&writeNmon4=" + val('writeNmon4');
-                 
+
+                server += "&tempCorr0=" + val('tempCorr0') + "&tempCorr1=" + val('tempCorr1') + "&tempCorr2=" + val('tempCorr2') + "&tempCorr3=" + (val('tempCorr3')) + "&tempCorr4=" + val('tempCorr4');
+                
                 send_request(submit, server);
             }
         </script>
@@ -715,26 +717,36 @@ const char P_index[] PROGMEM =  R"=====(
             </titles>
             <div id="main_unit">
                 <center>
-                    <table>
+                    <table id="table__font" class = "table">
                         <tr>
-                            <td align = "right"><span class="opt_cn">Датчик №1 - Бойлер</span></td>
+                            <td align = "center"><span class="opt_cn">Датчик №</span></td>
+                            <td align = "center"><span class="opt_cn">МАС</span></td>
+                            <td align = "center"><span class="opt_cn">Коррекция</span></td>
+                        </tr>
+                        <tr>
+                            <td align = "right"><span class="opt_cn">1 - Бойлер</span></td>
                             <td><input type="text" class="field form-control" id="dallas0" value="{{dallas0}}" pattern="[- 0-9a-zA-Z._/]{1,30}"></td>
+                            <td><input id="tempCorr0" value="{{tempCorr0}}" type="number" min="-9999" max="99999" step="0.01"/></td>
                         </tr>
                         <tr>
-                            <td align = "right"><span class="opt_cn">Датчик №2 - Вытяжка</span></td>
+                            <td align = "right"><span class="opt_cn">2 - Вытяжка</span></td>
                             <td><input type="text" class="field form-control" id="dallas1" value="{{dallas1}}" pattern="[- 0-9a-zA-Z._/]{1,30}"></td>
+                            <td><input id="tempCorr1" value="{{tempCorr1}}" type="number" min="-9999" max="99999" step="0.01"/></td>
                         </tr>
                         <tr>
-                            <td align = "right"><span class="opt_cn">Датчик №3 - Улица</span></td>
+                            <td align = "right"><span class="opt_cn">3 - Улица</span></td>
                             <td><input type="text" class="field form-control" id="dallas2" value="{{dallas2}}" pattern="[- 0-9a-zA-Z._/]{1,30}"></td>
+                            <td><input id="tempCorr2" value="{{tempCorr2}}" type="number" min="-9999" max="99999" step="0.01"/></td>
                         </tr>
                         <tr>
-                            <td align = "right"><span class="opt_cn">Датчик №4 - Ванная</span></td>
+                            <td align = "right"><span class="opt_cn">4 - Ванная</span></td>
                             <td><input type="text" class="field form-control" id="dallas3" value="{{dallas3}}" pattern="[- 0-9a-zA-Z._/]{1,30}"></td>
+                            <td><input id="tempCorr3" value="{{tempCorr3}}" type="number" min="-9999" max="99999" step="0.01"/></td>
                         </tr>
                         <tr>
-                            <td align = "right"><span class="opt_cn">Датчик №5 - Свободный</span></td>
+                            <td align = "right"><span class="opt_cn">5 - Свободный</span></td>
                             <td><input type="text" class="field form-control" id="dallas4" value="{{dallas4}}" pattern="[- 0-9a-zA-Z._/]{1,30}"></td>
+                            <td><input id="tempCorr4" value="{{tempCorr4}}" type="number" min="-9999" max="99999" step="0.01"/></td>
                         </tr>
                     </table>
                 </center>

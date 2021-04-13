@@ -102,6 +102,17 @@ void handle_configs() {
   json += passwordAP;
 
   
+  json += "\",\"tempCorr0\":\"";
+  json += tempCorr[0];
+  json += "\",\"tempCorr1\":\"";
+  json += tempCorr[1];
+  json += "\",\"tempCorr2\":\"";
+  json += tempCorr[2];
+  json += "\",\"tempCorr3\":\"";
+  json += tempCorr[3];
+  json += "\",\"tempCorr4\":\"";
+  json += tempCorr[4];
+
   json += "\",\"dallas0\":\"";
   json += dallas[0];
   json += "\",\"dallas1\":\"";
@@ -248,6 +259,12 @@ void set_configs(){
   if(server.arg("writeNmon2")!="") writeNmon[2] = server.arg("writeNmon2").toInt();
   if(server.arg("writeNmon3")!="") writeNmon[3] = server.arg("writeNmon3").toInt();
   if(server.arg("writeNmon4")!="") writeNmon[4] = server.arg("writeNmon4").toInt();
+
+  if(server.arg("tempCorr0")!="") tempCorr[0] = server.arg("tempCorr0").toFloat();
+  if(server.arg("tempCorr1")!="") tempCorr[1] = server.arg("tempCorr1").toFloat();
+  if(server.arg("tempCorr2")!="") tempCorr[2] = server.arg("tempCorr2").toFloat();
+  if(server.arg("tempCorr3")!="") tempCorr[3] = server.arg("tempCorr3").toFloat();
+  if(server.arg("tempCorr4")!="") tempCorr[4] = server.arg("tempCorr4").toFloat();
 
   if(mqttOn) reconnect();
   saveConfig(); 

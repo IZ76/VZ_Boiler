@@ -52,6 +52,12 @@ bool loadConfig(){
   dallas[2]=doc["dallas2"].as<String>();
   dallas[3]=doc["dallas3"].as<String>();
   dallas[4]=doc["dallas4"].as<String>();
+
+  tempCorr[0]=doc["tempCorr0"];
+  tempCorr[1]=doc["tempCorr1"];
+  tempCorr[2]=doc["tempCorr2"];
+  tempCorr[3]=doc["tempCorr3"];
+  tempCorr[4]=doc["tempCorr4"];
   
   snprintf(mqtt_server, 30, "%s", (doc["mqtt_server"].as<String>()).c_str());
   mqtt_port = doc["mqtt_port"];
@@ -128,6 +134,12 @@ bool saveConfig(){
   doc["dallas2"] = dallas[2];
   doc["dallas3"] = dallas[3];
   doc["dallas4"] = dallas[4];
+
+  doc["tempCorr0"]=tempCorr[0];
+  doc["tempCorr1"]=tempCorr[1];
+  doc["tempCorr2"]=tempCorr[2];
+  doc["tempCorr3"]=tempCorr[3];
+  doc["tempCorr4"]=tempCorr[4];
   
   doc["mqtt_server"] = mqtt_server;
   doc["mqtt_port"] = mqtt_port;

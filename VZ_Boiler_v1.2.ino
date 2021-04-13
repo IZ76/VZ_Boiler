@@ -115,6 +115,7 @@ String dallas[5]{
   "585344265378"             // вільний датчик
 };
 float tempDallas[5];
+float tempCorr[5] ={-1.0, 0, 0, 0, 0};
 int timePubTemp = 30;
 int numberIntervalTime = 0;
 
@@ -443,7 +444,7 @@ void temper(){
   }
   for(int i=0; i<5; i++){
     if(aDDr==dallas[i]){
-      tempDallas[i]=(float)raw/16.0 - (i==3?0.65:0)+(i==0?0:0);         // Градусник уличный корретируем на 0.65С
+      tempDallas[i]=(float)raw/16.0 + tempCorr[i];
       Serial.print("tempDallas[");
       Serial.print(i);
       Serial.print("] = ");
